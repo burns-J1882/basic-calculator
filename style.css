@@ -1,0 +1,19 @@
+* {
+    outline: 1px green solid;
+}
+
+.calculator-body {
+   /* display:flex;
+    flex-direction: column;
+    align-items: center;
+    */
+    min-width: 300px;
+    min-height: 300px;
+}
+
+
+.display {
+    height: 50px;
+    width: 300px;
+    background-color: aquamarine;
+}
