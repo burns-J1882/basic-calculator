@@ -20,6 +20,63 @@ function operate (operator, a, b){
     return operator(a, b);
 }
 
+//combine elements in the array so it can be parsed 
+function combinator (arr) {
+    let result = arr.reduce((a, b) => a += b);
+    return result;
+}
+
+    /*
+click a number to start adding them to firstNum
+click an operator to start adding a to Second num
+    use the same click listener, if firstNum has something and operator 
+    is clicked send the numbers to secondNum
+click equals to call the function assigned to the id of the operator button
+*/
+let obj = {
+    firstNum: [],
+    secondNum: [],
+    operatorClicked : false
+};
+
+const numbers = document.querySelectorAll('.number-key');
+const operators = document.querySelectorAll('.operator-key');
+const equalsKey = document.querySelector('#equals-key');
+
+
+//gets the id from the clicked button
+//uses the operator clicked to determine where to store the data
+//!add a check to skip if theres a second decimal input
+numbers.forEach((key) => {
+    key.addEventListener('click', (e) => {
+        console.log(e.target.id); //gets the id from the clicked button
+        if(obj.operatorClicked === false){ 
+            obj.firstNum.push(e.target.id);
+        } else {
+            obj.secondNum.push(e.target.id);
+        };
+    })
+})
+//checks and switches the operator so the numbers are stored in a different place
+operators.forEach((key) => {
+    key.addEventListener('click', (e) => {
+        if (obj.operatorClicked === false){
+            obj.operatorClicked = true;
+        }
+    })
+})
+
+//currently hard coded but will call the appropriate function later
+//parse the number here to make deleting in case of typos easier later. 
+//output result
+//save output to firstNum if they click another operator, assign new input to second still
+//save output
+//reset everything if someone clicks AC button
+equalsKey.addEventListener('click', () =>{
+    a = parseFloat(combinator(obj.firstNum));
+    b = parseFloat(combinator(obj.secondNum));
+    console.log(add(a, b));
+})
 
 //functions to make clicked/keyed numbers appear in display
    //each clicked key adds that value to an array
@@ -32,6 +89,7 @@ function operate (operator, a, b){
     //passes the a, b arguments
     //returns the value as a replace.Child manipulation
 
+/*
 let displayValue = []; 
 
 //initialize display to 0
@@ -58,7 +116,27 @@ function calcDisplay(arr){
 const keyedNum = document.querySelectorAll('.number-key');
     keyedNum.forEach((key) => {
         key.addEventListener('click', () =>{
-            displayValue.push(key.id);
-            calcDisplay(displayValue);
+            nums.firstNum.push(key.id);
+            calcDisplay(nums.firstNum);
     })    
 })
+
+//add key begins adding new strings to nums.secondNum 
+const additionKey = document.querySelector('#addition-key');
+additionKey.addEventListener('click', () =>{
+    keyedNum.forEach((key) => {
+        key.addEventListener('click', () =>{
+            if(nums.firstNum.length > 1)
+            nums.secondNum.push(key.id);
+            nums.firstNum.pop();
+            calcDisplay(nums.secondNum);
+    })    
+})
+})
+
+const equalsKey = document.querySelector('#equals-key');
+equalsKey.addEventListener('click', () => {
+    let a = parseFloat(combinator(nums.firstNum));
+    let b = parseFloat(combinator(nums.secondNum));
+})
+*/
