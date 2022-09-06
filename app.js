@@ -42,18 +42,29 @@ let obj = {
 const numbers = document.querySelectorAll('.number-key');
 const operators = document.querySelectorAll('.operator-key');
 const equalsKey = document.querySelector('#equals-key');
+const display = document.querySelector('.display')
 
+//initialize display to 0
+const output = document.createElement('p');
+output.textContent = '0';
+display.appendChild(output);
+//call to update the display
+function calcDisplay(obj){
+    output.textContent = combinator(obj);
+}
 
 //gets the id from the clicked button
 //uses the operator clicked to determine where to store the data
 //!add a check to skip if theres a second decimal input
 numbers.forEach((key) => {
     key.addEventListener('click', (e) => {
-        console.log(e.target.id); //gets the id from the clicked button
+        //console.log(e.target.id); //gets the id from the clicked button
         if(obj.operatorClicked === false){ 
             obj.firstNum.push(e.target.id);
+            calcDisplay(obj.firstNum);
         } else {
             obj.secondNum.push(e.target.id);
+            calcDisplay(obj.secondNum);
         };
     })
 })
@@ -63,6 +74,9 @@ operators.forEach((key) => {
         if (obj.operatorClicked === false){
             obj.operatorClicked = true;
         }
+        console.log(e.target.id)
+        //switch statement for each operator
+
     })
 })
 
@@ -75,7 +89,9 @@ operators.forEach((key) => {
 equalsKey.addEventListener('click', () =>{
     a = parseFloat(combinator(obj.firstNum));
     b = parseFloat(combinator(obj.secondNum));
-    console.log(add(a, b));
+    result = add(a,b);
+    output.textContent = result;
+    obj.operatorClicked = false; //allow someone to use the new result
 })
 
 //functions to make clicked/keyed numbers appear in display
