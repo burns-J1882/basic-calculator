@@ -33,10 +33,12 @@ click an operator to start adding a to Second num
     is clicked send the numbers to secondNum
 click equals to call the function assigned to the id of the operator button
 */
+
 let obj = {
     firstNum: [],
     secondNum: [],
-    operatorClicked : false
+    operatorClicked : false,
+    operatorStorage : ''
 };
 
 const numbers = document.querySelectorAll('.number-key');
@@ -74,25 +76,53 @@ operators.forEach((key) => {
         if (obj.operatorClicked === false){
             obj.operatorClicked = true;
         }
-        console.log(e.target.id)
-        //switch statement for each operator
+        //switch statement so each operator can be used on equals key
+        switch (e.target.id) {
+            case 'addition-key':
+                console.log('addition-key clicked');
+                obj.operatorStorage = add;
+                break;
+            case 'minus-key':
+                console.log('minus-key clicked'); 
+                obj.operatorStorage = subtract;
+                break;
+            case 'multiply-key':
+                console.log('multiply-key clicked');
+                obj.operatorStorage = multiply;
+                break;
+            case 'divide-key':
+                console.log('divide-key clicked') 
+                obj.operatorStorage = divide;
+                break;
+            case 'all-clear-key': //resets to the defaults, set screen display to zero
+                obj.firstNum = [];
+                obj.secondNum = [];
+                obj.operatorClicked = false;
+                obj.operatorStorage = '';
+                output.textContent = '0';
+                break;
+            case 'delete-key':
+                if (obj.operatorClicked === false){
+                    //remove last number from firstNum and update display
+                }else{
+                    //remove last number from secondNum and update display
+                }
+        }
 
     })
 })
 
-//currently hard coded but will call the appropriate function later
-//parse the number here to make deleting in case of typos easier later. 
-//output result
 //save output to firstNum if they click another operator, assign new input to second still
-//save output
-//reset everything if someone clicks AC button
 equalsKey.addEventListener('click', () =>{
-    a = parseFloat(combinator(obj.firstNum));
+    a = parseFloat(combinator(obj.firstNum)); //parse the number here to make deleting in case of typos easier later
     b = parseFloat(combinator(obj.secondNum));
-    result = add(a,b);
-    output.textContent = result;
+    result = operate(obj.operatorStorage, a, b); //save output
+    output.textContent = result; //output result
+    obj.firstNum = [result];
+    obj.secondNum = [];
     obj.operatorClicked = false; //allow someone to use the new result
 })
+
 
 //functions to make clicked/keyed numbers appear in display
    //each clicked key adds that value to an array
