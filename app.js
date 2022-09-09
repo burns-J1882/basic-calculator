@@ -1,3 +1,4 @@
+//THIS WORKS SEQUENTIALLY AS LONG AS EQUALS IS PRESSED, FIX THIS ASAP
 //basic operator functions
 function add (a, b){
     return a + b;
@@ -19,13 +20,6 @@ function divide (a, b){
 function operate (operator, a, b){
     return operator(a, b);
 }
-
-//combine elements in the array so it can be parsed 
-function combinator (arr) {
-    let result = arr.reduce((a, b) => a += b);
-    return result;
-}
-
     /*
 click a number to start adding them to firstNum
 click an operator to start adding a to Second num
@@ -54,6 +48,20 @@ display.appendChild(output);
 function calcDisplay(obj){
     output.textContent = combinator(obj);
 }
+//combine elements in the array so it can be parsed
+function combinator (arr) {
+    //let result = arr.reduce((a, b) => a += b);
+    //return result;
+    return arr.reduce((a, b) => a += b);
+}
+function callEquality () {//uses in the switches for chaining multiple operations
+    a = parseFloat(combinator(obj.firstNum)); //parse the number here to make deleting in case of typos easier later
+    b = parseFloat(combinator(obj.secondNum));
+    result = operate(obj.operatorStorage, a, b); //save output
+    output.textContent = result; //output result
+    obj.firstNum = [result];
+    obj.secondNum = [];//next input stored here
+}
 
 //gets the id from the clicked button
 //uses the operator clicked to determine where to store the data
@@ -73,26 +81,54 @@ numbers.forEach((key) => {
 //checks and switches the operator so the numbers are stored in a different place
 operators.forEach((key) => {
     key.addEventListener('click', (e) => {
-        if (obj.operatorClicked === false){
-            obj.operatorClicked = true;
-        }
+        /* 
+        if (obj.operatorClicked === true){
+            
+            result = operate(obj.operatorStorage, a, b); //save output
+            output.textContent = result; //output result
+            obj.firstNum = [result];
+             obj.secondNum = [];//next input stored here
+             obj.operatorStorage = add;
+        } else{
+            console.log('hell')
+        */
         //switch statement so each operator can be used on equals key
         switch (e.target.id) {
             case 'addition-key':
-                console.log('addition-key clicked');
+                if (obj.operatorClicked === true){
+                    callEquality()
+                     obj.operatorStorage = add;
+                } else{
                 obj.operatorStorage = add;
+                obj.operatorClicked = true;
+                }
                 break;
             case 'minus-key':
-                console.log('minus-key clicked'); 
+                if (obj.operatorClicked === true){
+                    callEquality()
+                     obj.operatorStorage = subtract;
+                } else{ 
                 obj.operatorStorage = subtract;
+                obj.operatorClicked = true;
+                }
                 break;
             case 'multiply-key':
-                console.log('multiply-key clicked');
+                if (obj.operatorClicked === true){
+                    callEquality()
+                     obj.operatorStorage = multiply;
+                } else{
                 obj.operatorStorage = multiply;
+                obj.operatorClicked = true;
+                }
                 break;
             case 'divide-key':
-                console.log('divide-key clicked') 
+                if (obj.operatorClicked === true){
+                    callEquality()
+                     obj.operatorStorage = divide;
+                } else{
                 obj.operatorStorage = divide;
+                obj.operatorClicked = true;
+                }
                 break;
             case 'all-clear-key': //resets to the defaults, set screen display to zero
                 obj.firstNum = [];
@@ -102,11 +138,13 @@ operators.forEach((key) => {
                 output.textContent = '0';
                 break;
             case 'delete-key':
-                if (obj.operatorClicked === false){
-                    //remove last number from firstNum and update display
-                }else{
-                    //remove last number from secondNum and update display
-                }
+                if (obj.operatorClicked === false){ //remove last number from firstNum and update display
+                    obj.firstNum.pop();
+                    calcDisplay(obj.firstNum);
+                }else{//remove last number from secondNum and update display
+                    obj.secondNum.pop()
+                    calcDisplay(obj.secondNum)
+               }
         }
 
     })
@@ -114,12 +152,7 @@ operators.forEach((key) => {
 
 //save output to firstNum if they click another operator, assign new input to second still
 equalsKey.addEventListener('click', () =>{
-    a = parseFloat(combinator(obj.firstNum)); //parse the number here to make deleting in case of typos easier later
-    b = parseFloat(combinator(obj.secondNum));
-    result = operate(obj.operatorStorage, a, b); //save output
-    output.textContent = result; //output result
-    obj.firstNum = [result];
-    obj.secondNum = [];
+    callEquality()
     obj.operatorClicked = false; //allow someone to use the new result
 })
 
