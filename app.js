@@ -68,30 +68,20 @@ function callEquality () {//uses in the switches for chaining multiple operation
 //!add a check to skip if theres a second decimal input
 numbers.forEach((key) => {
     key.addEventListener('click', (e) => {
-        //console.log(e.target.id); //gets the id from the clicked button
-        if(obj.operatorClicked === false){ 
-            obj.firstNum.push(e.target.id);
-            calcDisplay(obj.firstNum);
-        } else {
-            obj.secondNum.push(e.target.id);
-            calcDisplay(obj.secondNum);
-        };
+        if (e.target.id === '.' && obj.firstNum.includes('.') && obj.operatorClicked === false || e.target.id === '.' && obj.secondNum.includes('.')){
+            alert('Too many decimals buddy')
+                } else if(obj.operatorClicked === false){ 
+                    obj.firstNum.push(e.target.id);
+                    calcDisplay(obj.firstNum);
+                } else {
+                    obj.secondNum.push(e.target.id);
+                    calcDisplay(obj.secondNum);
+                };
     })
 })
 //checks and switches the operator so the numbers are stored in a different place
 operators.forEach((key) => {
     key.addEventListener('click', (e) => {
-        /* 
-        if (obj.operatorClicked === true){
-            
-            result = operate(obj.operatorStorage, a, b); //save output
-            output.textContent = result; //output result
-            obj.firstNum = [result];
-             obj.secondNum = [];//next input stored here
-             obj.operatorStorage = add;
-        } else{
-            console.log('hell')
-        */
         //switch statement so each operator can be used on equals key
         switch (e.target.id) {
             case 'addition-key':
